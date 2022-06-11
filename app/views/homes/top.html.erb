@@ -1,0 +1,60 @@
+<div id='map'></div>
+<div id='directions_panel' style="width:100%"></div>
+
+スタート<input type="textbox" id="start" value="">
+ゴール<input type="textbox" id="end" value="">
+<input type="button" id="btn" value="ナビ" onclick="searchNav()">
+
+<style>
+  #map {
+    height: 600px;
+    width: 600px;
+  }
+</style>
+
+<script>
+//初期マップの設定
+let map
+let marker
+function initMap(){
+  geocoder = new google.maps.Geocoder()
+
+map = new google.maps.Map(document.getElementById('map'), {
+    center:  {lat: 35.6803997, lng:139.7690174},  //東京
+    zoom: 5,
+    mayTypeId: google.maps.MapTypeId.ROADMAP //ナビ
+  });
+}
+
+
+
+function searchNav(){
+  let inputstart = document.getElementById('start').value;
+  let inputend = document.getElementById('end').value;
+  let directionsService = new google.maps.DirectionsService;
+  let directionsRenderer = new google.maps.DirectionsRenderer;
+  directionsService.route({
+        origin: inputstart, //スタート地点
+        destination: inputend,　//当直地点
+        travelMode: google.maps.TravelMode.DRIVING　//電車・徒歩は対応しver対応しない為自動車に限定
+    }, function(response, status) {
+        console.log(response);
+        if (status === google.maps.DirectionsStatus.OK) {
+            // ルート検索の結果を地図上に描画
+            directionsRenderer.setMap(map);
+            directionsRenderer.setDirections(response);
+            directionsRenderer.setOptions({
+              polylineOptions: {
+                  strokeColor: '#f246c5',
+                  strokeOpacity: 0.8,
+                  strokeWeight: 8
+              }
+        });
+        alert("ルート検出！")
+        // directionsDisplay.setPanel(document.getElementById('directions_panel'));
+        }else{
+          alert("すみません、検索出来ません")
+        }
+    });
+}
+</script>
