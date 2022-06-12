@@ -20,13 +20,11 @@ function initMap(){
   geocoder = new google.maps.Geocoder()
 
 map = new google.maps.Map(document.getElementById('map'), {
-    center:  {lat: 35.6803997, lng:139.7690174},  //東京駅
-    zoom: 5, //国が見えるように
+    center:  {lat: 35.6803997, lng:139.7690174},  //東京駅中心
+    zoom: 5, //国全体が見えるように
     mayTypeId: google.maps.MapTypeId.ROADMAP //ナビ
   });
 }
-
-
 
 function searchNav(){
   let inputstart = document.getElementById('start').value;
@@ -36,7 +34,7 @@ function searchNav(){
   directionsService.route({
         origin: inputstart, //スタート地点
         destination: inputend,　//当直地点
-        travelMode: google.maps.TravelMode.DRIVING　//電車・徒歩は対応しver対応しない為自動車に限定
+        travelMode: google.maps.TravelMode.DRIVING　//電車・徒歩ver対応しない為自動車に限定
     }, function(response, status) {
         console.log(response);
         if (status === google.maps.DirectionsStatus.OK) {
