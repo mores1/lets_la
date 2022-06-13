@@ -1,4 +1,7 @@
 class SpotsController < ApplicationController
+  
+  before_action :signin_user?
+
   def new
   end
 
