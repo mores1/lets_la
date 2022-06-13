@@ -24,6 +24,24 @@ map = new google.maps.Map(document.getElementById('map'), {
     zoom: 5, //国全体が見えるように
     mayTypeId: google.maps.MapTypeId.ROADMAP //ナビ
   });
+  <% @spots.each do |spot|%>
+      ( function() {
+        let markerLatLng = new google.maps.LatLng({lat: <%= spot.lat %>, lng: <%= spot.lng %>}); // 緯度経度のデータ作成
+        let marker = new google.maps.Marker({
+          position: markerLatLng,
+          map: map
+      });
+//マーカーをクリックしたとき、詳細情報を表示
+      let infowindow = new google.maps.InfoWindow({
+        position: markerLatLng,
+        content: "<a href='<%= spot_path(spot) %>' target='_blank'><%= spot.title %>(<%= spot.lat %>,<%= spot.lng %>)</a>"
+      }); //ここで詳細ページへのリンクを表示させる
+      marker.addListener('click', function() {
+        infowindow.open(map, marker);
+        });
+
+      })();
+    <% end %>
 }
 
 function searchNav(){

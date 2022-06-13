@@ -1,5 +1,7 @@
 class Spot < ApplicationRecord
   
+  belongs_to :user
+  
   has_one_attached :image_id
   
   def get_image_id
