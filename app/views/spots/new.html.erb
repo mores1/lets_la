@@ -1,2 +1,93 @@
-<h1>Spots#new</h1>
-<p>Find me in app/views/spots/new.html.erb</p>
+<div class ="container">
+  <%= form_with model: Spot.new do |f| %>
+    <div class ="row">
+      <div class="col-6 mt-3">
+        <div id='map'></div>
+        検索後地図でも位置調整ができるよ。<br>
+        <input id="address" type="textbox" placeholder="スポットを入力!">
+        <input type="button" value="検索" onclick="codeAddress()">
+        <%= f.hidden_field :lat,:value =>"緯度", id: :lat %>
+        <%= f.hidden_field :lng,:value =>"経度", id: :lng %>
+      </div>
+
+      <div class="newspot-form col-6 mt-3 pl-5">
+        <h4>画像</h4>
+        <%= f.file_field :image_id, accept: "image/*" %>
+        <h4>タイトル</h4>
+        <%= f.text_field :title %>
+        <h4>詳細</h4>
+        <%= f.text_area :body %><br>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="row text-center">
+      <div class="col-12 mb-2">
+        <%= f.submit '添付デート', class: 'btn btn-primary' %>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<style>
+#map {
+  height: 350px;
+  width: 350px;
+
+}
+</style>
+
+<script>
+//初期マップの設定
+let map
+let marker
+function initMap(){
+  geocoder = new google.maps.Geocoder()
+
+map = new google.maps.Map(document.getElementById('map'), {
+    center:  {lat: 35.6803997, lng:139.7690174},  //東京
+    zoom: 15,
+
+  });
+}
+
+//検索後のマップ作成
+let geocoder
+let aft
+function codeAddress(){
+  let inputAddress = document.getElementById('address').value;
+  geocoder.geocode( { 'address': inputAddress}, function(results, status) {
+    if (status == 'OK') {
+        //マーカーが複数できないようにする
+        if (aft == true){
+            marker.setMap(null);
+        }
+
+        //新しくマーカーを作成する
+        map.setCenter(results[0].geometry.location);
+            marker = new google.maps.Marker({
+            map: map,
+            position: results[0].geometry.location,
+            draggable: false // ナビ時検索ヒットさせる為ドラッグ不可
+        });
+
+        //二度目以降か判断
+        aft = true
+
+        //検索した時に緯度経度を入力する
+        document.getElementById('lat').value = results[0].geometry.location.lat();
+        document.getElementById('lng').value = results[0].geometry.location.lng();
+
+        // マーカーのドロップ（ドラッグ終了）時のイベント
+        google.maps.event.addListener( marker, 'dragend', function(ev){
+            // イベントの引数evの、プロパティ.latLngが緯度経度
+            document.getElementById('lat').value = ev.latLng.lat();
+            document.getElementById('lng').value = ev.latLng.lng();
+        });
+    } else {
+      alert('該当する結果がありませんでした：' + status);
+    }
+  });
+}
+</script>
