@@ -1,14 +1,13 @@
 <div id='map'></div>
-<div id='directions_panel' style="width:100%"></div>
 
-スタート<input type="textbox" id="start" value="">
-ゴール<input type="textbox" id="end" value="">
+スタート<input type="textbox" id="start" value="" placeholder="名前or緯度経度(例:35.6803997,139.7690174)で検索"><br>
+ゴール<input type="textbox" id="end" value="" placeholder="名前or緯度経度(例:35.6803997,139.7690174)で検索"><br>
 <input type="button" id="btn" value="ナビ" onclick="searchNav()">
 
 <style>
   #map {
-    height: 600px;
-    width: 600px;
+    height: 80vh;
+    width: 100vw;
   }
 </style>
 
@@ -29,17 +28,17 @@ map = new google.maps.Map(document.getElementById('map'), {
         let markerLatLng = new google.maps.LatLng({lat: <%= spot.lat %>, lng: <%= spot.lng %>}); // 緯度経度のデータ作成
         let marker = new google.maps.Marker({
           position: markerLatLng,
-          map: map
+          map: map,
+          animation: google.maps.Animation.BOUNCE
       });
 //マーカーをクリックしたとき、詳細情報を表示
       let infowindow = new google.maps.InfoWindow({
         position: markerLatLng,
-        content: "<a href='<%= spot_path(spot) %>' target='_blank'><%= spot.title %>(<%= spot.lat %>,<%= spot.lng %>)</a>"
-      }); //ここで詳細ページへのリンクを表示させる
+        content: "<a href='<%= spot_path(spot) %>' ><%= spot.title %></a>" + "(緯度,経度)=(<%= spot.lat %>,<%= spot.lng %>)" 
+      }); //ナビ用で緯度経度表示
       marker.addListener('click', function() {
         infowindow.open(map, marker);
         });
-
       })();
     <% end %>
 }
@@ -51,7 +50,7 @@ function searchNav(){
   let directionsRenderer = new google.maps.DirectionsRenderer;
   directionsService.route({
         origin: inputstart, //スタート地点
-        destination: inputend,　//当直地点
+        destination: inputend,　//ゴール地点
         travelMode: google.maps.TravelMode.DRIVING　//電車・徒歩ver対応しない為自動車に限定
     }, function(response, status) {
         console.log(response);

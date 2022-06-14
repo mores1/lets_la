@@ -1,11 +1,11 @@
 class UsersController < ApplicationController
-  
-  before_action :signin_user, except: [:new, :create]
-  
+
+  before_action :signin_user? , except: [:new, :create]
+
   def new
     @user = User.new
   end
-  
+
   def create
     @user = User.new(user_params)
     if @user.save
@@ -13,6 +13,7 @@ class UsersController < ApplicationController
       redirect_to spots_path
     else
       redirect_to request.referer
+      flash[:alert] = "登録出来ません。もう一度お願い致します。"
     end
   end
 
@@ -20,12 +21,24 @@ class UsersController < ApplicationController
   end
 
   def edit
+    @user = User.find(params[:id])
   end
   
+  def update
+    @user = User.find(params[:id])
+    if @user.update(user_params)
+      redirect_to edit_user_path(@user)
+      flash[:alert] = "更新しました。"
+    else
+      redirect_to request.referer
+      flash[:alert] = "更新出来ませんでした。"
+    end
+  end
+
   private
-  
+
   def user_params
     params.require(:user).permit(:name, :email, :password, :password_confirmation)
   end
-  
+
 end

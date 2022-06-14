@@ -1,0 +1,17 @@
+<div class="hamburger">
+  <span></span>
+  <span></span>
+  <span></span>
+</div>
+
+<nav class="globalMenuSp">
+    <ul>
+        <li><%= link_to "スポットTop", spots_path %></li>
+        <li><%= link_to "スポット投稿", new_spot_path %></li>
+        <li><%= link_to "マイページ", edit_user_path(@current_user) %></li>
+        <% if @current_user.name == "admin" %>
+            <li><%= link_to "会員一覧", users_path %></li>
+        <% end %>
+        <li><%= link_to "ログアウト", logout_path, method: :delete %></li>
+    </ul>
+</nav>

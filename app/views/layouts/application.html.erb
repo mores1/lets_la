@@ -7,13 +7,32 @@
     <%= csp_meta_tag %>
 
     <!--%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>-->
-    <%= stylesheet_pack_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <%= stylesheet_pack_tag 'application', media: 'all' %>
+    <%= javascript_pack_tag 'application' %>
   </head>
 
   <body>
-    <%= render 'layouts/header' %>
+    <%= alert %>
+    <% if @current_user == nil %>
+      <%= render 'layouts/header_yet' %>
+    <% else %>
+      <%= render 'layouts/header_on' %>
+    <% end %>
     <%= yield %>
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=<%= ENV['MAP_KEY'] %>&callback=initMap"></script>
   </body>
 </html>
+
+<script> //ヘッダー用jsまとめて記述
+  $(function() {
+    $('.hamburger').click(function() {
+        $(this).toggleClass('active');
+
+        if ($(this).hasClass('active')) {
+            $('.globalMenuSp').addClass('active');
+        } else {
+            $('.globalMenuSp').removeClass('active');
+        }
+    });
+});
+</script>

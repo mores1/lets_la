@@ -1,2 +1,14 @@
-<h1>Users#edit</h1>
-<p>Find me in app/views/users/edit.html.erb</p>
+<div class="container">
+  <h1 class="text-center font-weight-bolder">会員情報編集</h1>
+  <div class="text-center mt-5">
+    <%= form_with model: @user, method: :patch do |f| %>
+      <h4 class="font-weight-bolder m-3">ユーザーネーム</h4>
+      <%= f.text_field :name%>
+      <h4 class="font-weight-bolder m-3">E-Mail Address</h4>
+      <%= f.text_field :email, class:"col-7" %>
+      <div class="mt-4">
+        <%= f.submit "変更", class:"btn btn-success" %>
+      </div>
+    <% end %>
+  </div>
+</div>

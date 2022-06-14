@@ -68,13 +68,18 @@ function codeAddress(){
             marker = new google.maps.Marker({
             map: map,
             position: results[0].geometry.location,
-            draggable: false // ナビ時の検索結果を確実にヒットさせる為ドラッグ不可
+            draggable: true //ドラッグで微調整
         });
         //二度目以降か判断
         aft = true
         //検索した時に緯度経度を入力する
         document.getElementById('lat').value = results[0].geometry.location.lat();
         document.getElementById('lng').value = results[0].geometry.location.lng();
+        google.maps.event.addListener( marker, 'dragend', function(ev){
+            // イベントの引数evの、プロパティ.latLngが緯度経度
+            document.getElementById('lat').value = ev.latLng.lat();
+            document.getElementById('lng').value = ev.latLng.lng();
+        });
     } else {
       alert('該当する結果がありませんでした：' + status);
     }
