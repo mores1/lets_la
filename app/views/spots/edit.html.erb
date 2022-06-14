@@ -41,8 +41,23 @@ function initMap(){
 map = new google.maps.Map(document.getElementById('map'), {
     center:  {lat: <%= @spot.lat %>, lng: <%= @spot.lng %>},  //東京
     zoom: 15,
-
   });
+      let transitLayer = new google.maps.TransitLayer();
+    transitLayer.setMap(map);
+      ( function() {
+        let markerLatLng = new google.maps.LatLng({lat: <%= @spot.lat %>, lng: <%= @spot.lng %>}); // 緯度経度のデータ作成
+        let marker = new google.maps.Marker({
+          position: markerLatLng,
+          map: map
+        });
+        let infowindow = new google.maps.InfoWindow({
+          position: markerLatLng,
+          content: "<a><%= @spot.title %></a>"
+        }); 
+        marker.addListener('click', function() {
+          infowindow.open(map, marker);
+        });
+     })();
 }
 
 //検索後のマップ作成

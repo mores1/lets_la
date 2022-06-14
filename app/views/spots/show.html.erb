@@ -35,7 +35,6 @@
     });
     let transitLayer = new google.maps.TransitLayer();
     transitLayer.setMap(map);
-    //複数マーカー ここから
       ( function() {
         let markerLatLng = new google.maps.LatLng({lat: <%= @spot.lat %>, lng: <%= @spot.lng %>}); // 緯度経度のデータ作成
         let marker = new google.maps.Marker({
