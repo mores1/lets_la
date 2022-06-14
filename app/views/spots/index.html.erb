@@ -12,7 +12,6 @@
 </style>
 
 <script>
-//初期マップの設定
 let map
 let marker
 function initMap(){
@@ -44,6 +43,7 @@ map = new google.maps.Map(document.getElementById('map'), {
 }
 
 function searchNav(){
+  initMap(map);　//前の情報が残らない様に一度初期化
   let inputstart = document.getElementById('start').value;
   let inputend = document.getElementById('end').value;
   let directionsService = new google.maps.DirectionsService;

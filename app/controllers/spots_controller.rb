@@ -28,6 +28,7 @@ class SpotsController < ApplicationController
 
   def show
     @spot = Spot.find(params[:id])
+    @spot_comment = SpotComment.new
   end
 
   def edit
