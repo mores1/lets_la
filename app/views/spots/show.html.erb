@@ -7,7 +7,32 @@
 経度:<%= @spot.lng %>
 <%= link_to "編集", edit_spot_path(@spot), class: 'btn btn-success' %>
 <%= link_to "削除", spot_path(@spot), method: :delete, class: 'btn btn-danger' %>
+<div class="ml-4">
+          コメント:<%= @spot.spot_comments.count %>件
+        </div>
+        <ul class="spot-comment">
+          <% @spot.spot_comments.each do |spot_comment| %>
+            <li>
+              <%= spot_comment.comment %><br>
+              <div class="text-right mr-2">
+                <%= spot_comment.created_at.strftime('%Y/%m/%d') %>
+                by <%= spot_comment.user.name %>
+                <% if @spot_comment.user == @current_user || @current_user.name == "admin"  %>
+                  <%= link_to "削除", spot_spot_comment_path(spot_comment.spot, spot_comment), method: :delete %>
+                <% end %>
+              </div>
 
+            </li>
+          <% end %>
+        </ul>
+        <div class="ml-3">
+        <!--% if current_user.name != "guestuser" %>-->
+          <%= form_with model: [@spot, @spot_comment] do |f| %>
+            <%= f.text_area :comment, placeholder: "コメントを入力してください" %>
+            <%= f.submit "コメント送信" %>
+          <% end %>
+        <!--% end %>-->
+      </div>
 <style>
 #map {
   height: 230px;
