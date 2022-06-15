@@ -1,8 +1,32 @@
 <div id='map'></div>
 
-スタート<input type="textbox" id="start" value="" placeholder="名前or緯度経度(例:35.6803997,139.7690174)で検索"><br>
-ゴール<input type="textbox" id="end" value="" placeholder="名前or緯度経度(例:35.6803997,139.7690174)で検索"><br>
-<input type="button" id="btn" value="ナビ" onclick="searchNav()">
+スタート<input type="textbox" id="go" value="" placeholder="名前or緯度経度(例:35.6803997,139.7690174)で検索"><br>
+ゴール<input type="textbox" id="fin" value="" placeholder="名前or緯度経度(例:35.6803997,139.7690174)で検索"><br>
+  <select id="testreset">
+    <option value="leave">残す</option>
+    <option value="delete">消す</option>
+  </select>
+<input type="button" id="btn" value="ナビ" onclick="testNav()">
+
+  <select id="start">
+  <% @spots.each do |spot| %>
+    <option value="<%= spot.lat %>,<%= spot.lng %>"><%= spot.title %></option>
+  <% end %>
+  </select>
+  <!--ゴール<input type="textbox" id="end" value="" placeholder="名前or緯度経度(例:35.6803997,139.7690174)で検索"><br>-->
+  <select id="end">
+    <% @spots.each do |spot| %>
+      <option value="<%= spot.lat %>,<%= spot.lng %>"><%= spot.title %></option>
+    <% end %>
+  </select>
+  <select id="reset">
+    <option value="leave">残す</option>
+    <option value="delete">消す</option>
+  </select>
+  <input type="submit" id="btn" value="検索" onclick="searchNav()">
+
+
+
 
 <style>
   #map {
@@ -12,64 +36,104 @@
 </style>
 
 <script>
-let map
-let marker
-function initMap(){
-  geocoder = new google.maps.Geocoder()
-
-map = new google.maps.Map(document.getElementById('map'), {
-    center:  {lat: 35.6803997, lng:139.7690174},  //東京駅中心
-    zoom: 5, //国全体が見えるように
-    mayTypeId: google.maps.MapTypeId.ROADMAP //ナビ
-  });
-  <% @spots.each do |spot|%>
+  let map
+  let marker
+  
+  function initMap(){
+    geocoder = new google.maps.Geocoder()
+    map = new google.maps.Map(document.getElementById('map'), {
+        center:  {lat: 35.6803997, lng:139.7690174},  //東京駅
+        zoom: 5, //日本全体用
+        mayTypeId: google.maps.MapTypeId.ROADMAP
+      });
+      
+    <% @spots.each do |spot|%>
       ( function() {
-        let markerLatLng = new google.maps.LatLng({lat: <%= spot.lat %>, lng: <%= spot.lng %>}); // 緯度経度のデータ作成
+        let markerLatLng = new google.maps.LatLng({lat: <%= spot.lat %>, lng: <%= spot.lng %>});
         let marker = new google.maps.Marker({
           position: markerLatLng,
           map: map,
           animation: google.maps.Animation.BOUNCE
-      });
-//マーカーをクリックしたとき、詳細情報を表示
-      let infowindow = new google.maps.InfoWindow({
-        position: markerLatLng,
-        content: "<a href='<%= spot_path(spot) %>' ><%= spot.title %></a>" + "(緯度,経度)=(<%= spot.lat %>,<%= spot.lng %>)" 
-      }); //ナビ用で緯度経度表示
-      marker.addListener('click', function() {
-        infowindow.open(map, marker);
         });
+        let infowindow = new google.maps.InfoWindow({
+          position: markerLatLng,
+          content: "<a href='<%= spot_path(spot) %>' ><%= spot.title %></a>" + "(緯度,経度)=(<%= spot.lat %>,<%= spot.lng %>)"
+        }); //ナビ用で緯度経度表示
+        marker.addListener('click', function() {
+          infowindow.open(map, marker);
+          });
       })();
-    <% end %>
-}
-
-function searchNav(){
-  initMap(map);　//前の情報が残らない様に一度初期化
-  let inputstart = document.getElementById('start').value;
-  let inputend = document.getElementById('end').value;
-  let directionsService = new google.maps.DirectionsService;
-  let directionsRenderer = new google.maps.DirectionsRenderer;
-  directionsService.route({
-        origin: inputstart, //スタート地点
-        destination: inputend,　//ゴール地点
-        travelMode: google.maps.TravelMode.DRIVING　//電車・徒歩ver対応しない為自動車に限定
+     <% end %>
+  }
+    function testNav(){
+    let renav = document.getElementById('testreset').value;
+    let inputstart = document.getElementById('go').value;
+    let inputend = document.getElementById('fin').value;
+      if (renav == "delete"){
+        initMap(map);　//前の情報が残らない様に一度初期化
+      }
+    let directionsService = new google.maps.DirectionsService;
+    let directionsRenderer = new google.maps.DirectionsRenderer;
+    directionsService.route({
+      origin: inputstart, //スタート地点
+      destination: inputend,　//ゴール地点
+      travelMode: google.maps.TravelMode.DRIVING,　//電車・徒歩ver対応しない為自動車に限定
+      avoidHighways: true, //高速禁止
+      avoidTolls: true //有料区間禁止(上記と併せて徒歩でも行けるようなルートにする)
     }, function(response, status) {
         console.log(response);
         if (status === google.maps.DirectionsStatus.OK) {
-            // ルート検索の結果を地図上に描画
-            directionsRenderer.setMap(map);
-            directionsRenderer.setDirections(response);
-            directionsRenderer.setOptions({
-              polylineOptions: {
-                  strokeColor: '#f246c5',
-                  strokeOpacity: 0.8,
-                  strokeWeight: 8
-              }
-        });
-        alert("ルート検出！")
-        // directionsDisplay.setPanel(document.getElementById('directions_panel'));
-        }else{
-          alert("すみません、検索出来ません")
-        }
-    });
-}
+          // ルート検索の結果を地図上に描画
+          directionsRenderer.setMap(map);
+          directionsRenderer.setDirections(response);
+          directionsRenderer.setOptions({
+            polylineOptions: {
+                strokeColor: '#f246c5',
+                strokeOpacity: 0.8,
+                strokeWeight: 8
+            }
+          });
+          alert("ルート検出！")
+          // directionsDisplay.setPanel(document.getElementById('directions_panel'));
+          }else{
+            alert("すみません、検索出来ません")
+          }
+      });
+  }
+  
+  function searchNav(){
+    let renav = document.getElementById('reset').value;
+    let inputstart = document.getElementById('start').value;
+    let inputend = document.getElementById('end').value;
+      if (renav == "delete"){
+        initMap(map);　//前の情報が残らない様に一度初期化
+      }
+    let directionsService = new google.maps.DirectionsService;
+    let directionsRenderer = new google.maps.DirectionsRenderer;
+    directionsService.route({
+      origin: inputstart, //スタート地点
+      destination: inputend,　//ゴール地点
+      travelMode: google.maps.TravelMode.DRIVING,　//電車・徒歩ver対応しない為自動車に限定
+      avoidHighways: true, //高速禁止
+      avoidTolls: true //有料区間禁止(上記と併せて徒歩でも行けるようなルートにする)
+    }, function(response, status) {
+        console.log(response);
+        if (status === google.maps.DirectionsStatus.OK) {
+          // ルート検索の結果を地図上に描画
+          directionsRenderer.setMap(map);
+          directionsRenderer.setDirections(response);
+          directionsRenderer.setOptions({
+            polylineOptions: {
+                strokeColor: '#f246c5',
+                strokeOpacity: 0.8,
+                strokeWeight: 8
+            }
+          });
+          alert("ルート検出！")
+          // directionsDisplay.setPanel(document.getElementById('directions_panel'));
+          }else{
+            alert("すみません、検索出来ません")
+          }
+      });
+  }
 </script>

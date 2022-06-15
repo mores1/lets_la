@@ -7,6 +7,15 @@
 経度:<%= @spot.lng %>
 <%= link_to "編集", edit_spot_path(@spot), class: 'btn btn-success' %>
 <%= link_to "削除", spot_path(@spot), method: :delete, class: 'btn btn-danger' %>
+<% if @spot.liked_by?(@current_user) %>
+  <%= link_to spot_likes_path(@spot), method: :delete do %>
+    <%= @spot.likes.count %>💛
+  <% end %>
+<% else %>
+  <%= link_to spot_likes_path(@spot), method: :post do %>
+    <%= @spot.likes.count %>♡
+  <% end %>
+<% end %>
 <div class="ml-4">
           コメント:<%= @spot.spot_comments.count %>件
         </div>
@@ -21,7 +30,6 @@
                   <%= link_to "削除", spot_spot_comment_path(spot_comment.spot, spot_comment), method: :delete %>
                 <% end %>
               </div>
-
             </li>
           <% end %>
         </ul>
