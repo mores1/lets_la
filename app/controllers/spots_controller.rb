@@ -24,6 +24,7 @@ class SpotsController < ApplicationController
 
   def index
     @spots = Spot.all
+    @spotlank = Spot.all
   end
 
   def show
