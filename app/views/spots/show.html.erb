@@ -1,25 +1,23 @@
-<h1 class="text-center font-weight-bolder"><%= @spot.title %>詳細</h1>
-<h5 class="text-right font-weight-bolder">by <%= @spot.user.name %></h5>
-<div id = "map"></div>
-<%= image_tag @spot.get_image_id, size:"140x140", class:'card-img-show' %>
-<%= @spot.body %>
-緯度:<%= @spot.lat %><br>
-経度:<%= @spot.lng %>
-<%= link_to "編集", edit_spot_path(@spot), class: 'btn btn-success' %>
-<%= link_to "削除", spot_path(@spot), method: :delete, class: 'btn btn-danger' %>
-<% if @spot.liked_by?(@current_user) %>
-  <%= link_to spot_likes_path(@spot), method: :delete do %>
-    <%= @spot.likes.count %>💛
-  <% end %>
-<% else %>
-  <%= link_to spot_likes_path(@spot), method: :post do %>
-    <%= @spot.likes.count %>♡
-  <% end %>
-<% end %>
-<div class="ml-4">
-          コメント:<%= @spot.spot_comments.count %>件
-        </div>
-        <ul class="spot-comment">
+<div class="show-container container">
+  <div class="spot-title row">
+    <h2 class="font-weight-bolder"><%= @spot.title %></h2>
+  </div>
+  <div class="show-row row col-12 d-flex justify-content-between">
+    <div class="post-left">
+      <div id='map'></div>
+    </div>
+    <div class="show-right">
+      <div class="show-img text-center">
+      <%= image_tag @spot.get_image_id, class:'card-img-show' %>
+      </div>
+      <div class="show-body text-center">
+        <%= @spot.body %>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="comment d-flex justify-content-between">
+      <ul class="spot-comment">
           <% @spot.spot_comments.each do |spot_comment| %>
             <li>
               <%= spot_comment.comment %><br>
@@ -33,55 +31,73 @@
             </li>
           <% end %>
         </ul>
-        <div class="ml-3">
-        <!--% if current_user.name != "guestuser" %>-->
-          <%= form_with model: [@spot, @spot_comment] do |f| %>
-            <%= f.text_area :comment, placeholder: "コメントを入力してください" %>
-            <%= f.submit "コメント送信" %>
+    </div>
+    <div class="comment-right text-center">
+      <div class="like">
+        <% if @spot.liked_by?(@current_user) %>
+          <%= link_to spot_likes_path(@spot), method: :delete do %>
+          <%= @spot.likes.count %><i class="fas fa-heart" aria-hidden="true" style="color: red;"></i>
+        <% end %>
+        <% else %>
+          <%= link_to spot_likes_path(@spot), method: :post do %>
+            <%= @spot.likes.count %><i class="fas fa-heart" aria-hidden="true"></i>
           <% end %>
-        <!--% end %>-->
+        <% end %>
       </div>
+      <div class="comment-form">
+        <%= form_with model: [@spot, @spot_comment] do |f| %>
+          <%= f.text_area :comment, placeholder: "コメントを入力してください" %><br>
+          <%= f.submit "コメント送信" %>
+        <% end %>
+      </div>
+      <div class="spot-edit">
+        <% if @spot_comment.user == @current_user || @current_user.name == "admin"  %>
+          <%= link_to "編集", edit_spot_path(@spot), class: 'btn btn-success' %>
+          <%= link_to "削除", spot_path(@spot), method: :delete, class: 'btn btn-danger' %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
 <style>
-#map {
-  height: 230px;
-  width: 230px;
-}
+  #map {
+    height: 45vh;
+    width: 45vh;
+  }
 </style>
 
 <script>
-  function initMap() {
-    //初期表示位置(中心位置を登録マーカーに変更)
-    let latlng = new google.maps.LatLng(<%= @spot.lat %>, <%= @spot.lng %>);
-    //デザイン
-    let styles = [
-         {
-          stylers: [
-           { "saturation": 0 },
-           { "lightness": 0 }
-          ]
-         }
-        ];
-    let map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 15,
-        styles: styles,
-        center: latlng
-    });
-    let transitLayer = new google.maps.TransitLayer();
-    transitLayer.setMap(map);
-      ( function() {
-        let markerLatLng = new google.maps.LatLng({lat: <%= @spot.lat %>, lng: <%= @spot.lng %>}); // 緯度経度のデータ作成
-        let marker = new google.maps.Marker({
-          position: markerLatLng,
-          map: map
-        });
-  　　　//マーカーをクリックしたとき、詳細情報を表示
-        let infowindow = new google.maps.InfoWindow({
-          position: markerLatLng,
-          content: "<a><%= @spot.title %></a>"
-        }); //ここで詳細ページへのリンクを表示させる
-        marker.addListener('click', function() {
-          infowindow.open(map, marker);
-        });
-     })();
-  }
+function initMap() {
+  let latlng = new google.maps.LatLng(<%= @spot.lat %>, <%= @spot.lng %>);
+  let styles = [
+     {
+      stylers: [
+       { "saturation": 0 },
+       { "lightness": 0 }
+      ]
+     }
+    ];
+  let map = new google.maps.Map(document.getElementById('map'), {
+    zoom: 15,
+    styles: styles,
+    center: latlng
+  });
+  let transitLayer = new google.maps.TransitLayer();
+  transitLayer.setMap(map);
+    ( function() {
+      let markerLatLng = new google.maps.LatLng({lat: <%= @spot.lat %>, lng: <%= @spot.lng %>});
+      let marker = new google.maps.Marker({
+        position: markerLatLng,
+        map: map
+      });
+      let infowindow = new google.maps.InfoWindow({
+        position: markerLatLng,
+        content: "<a><%= @spot.title %></a>"
+      }); 
+      marker.addListener('click', function() {
+        infowindow.open(map, marker);
+      });
+   })();
+}
 </script>

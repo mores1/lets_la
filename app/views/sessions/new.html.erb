@@ -1,13 +1,18 @@
 <div class="container">
-  <%= form_with scope: :session, url:login_path, local: true do |f| %>
-    
-    <%= f.label :name %>
-    <%= f.text_field :name %>
-
-    <%= f.label :password %>
-    <%= f.text_field :password %>
-
-    <%= f.submit "ログイン" %>
-    
+  <div class="registrations-form">
+    <h1>ログイン</h1>
+    <%= form_with scope: :session, url:login_path, local: true do |f| %>
+    <div class="field">
+      <%= f.label "ユーザーネーム" %><br>
+      <%= f.text_field :name %> 
+    </div>
+    <div class="field">
+      <%= f.label :password %><br>
+      <%= f.text_field :password %> 
+    </div>
+    <div class="registrations-btn">
+      <%= f.submit "ログイン", class: 'btn btn-primary' %>
+    </div>
   <% end %>
+  </div>
 </div>

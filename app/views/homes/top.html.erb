@@ -1,1 +1,10 @@
-topぺーーじ
+<div class = "container top">
+  <div class = "top-title">Lets La <i class="fas fa-car-side"></i>～</div>
+  <div class = "row">
+    <% if @current_user.present? %>
+      <%= link_to "ログアウト", logout_path, method: :delete %>
+    <% else %>
+      <%= link_to "login", login_path %>
+    <% end %>
+  </div>
+</div>

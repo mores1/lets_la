@@ -1,4 +1,16 @@
 @import '~bootstrap/scss/bootstrap';
+@import '~@fortawesome/fontawesome-free/scss/fontawesome';
+@import 'https://fonts.googleapis.com/css2?family=Hachi+Maru+Pop&display=swap';
+
+body{
+  height: 100vh;
+  font-family: 'Hachi Maru Pop', cursive;
+  font-weight: bold;
+  color: #111111;
+  display: flex;
+  flex-direction: column;
+  background-color: #faf68b;
+}
 
 .hamburger {
   display : block;
@@ -10,7 +22,7 @@
   height: 42px;
   cursor: pointer;
   text-align: center;
-  background-color:rgba(0,0,0,0.6);
+  background-color: rgb(55 210 236 / 53%);
   border-radius: 50%;
 }
 .hamburger span {
@@ -19,7 +31,7 @@
   width   : 30px;
   height  : 2px ;
   left    : 6px;
-  background : #555;
+  background: #50a7cc;
 }
 .hamburger span:nth-child(1) {
   top: 10px;
@@ -75,4 +87,132 @@ nav.globalMenuSp ul li a {
 
 nav.globalMenuSp.active {
   transform: translateX(0%);
+}
+
+.top{
+  text-align: center;
+  height: 100vh;
+}
+
+.top-title{
+  height: 40vh;
+  font-size: 15vh;
+  margin-top: 31vh;
+}
+
+.top a{
+  margin: auto;
+}
+
+.registrations-form{
+  margin-top: 19vh;
+  text-align: center;
+}
+
+.field{
+  margin: auto;
+}
+
+.field label{
+  display: inline-block;
+  margin-bottom: 0.65rem;
+}
+
+.registrations-btn{
+  margin-top: 1vh;
+}
+
+.show-container{
+  margin: 0;
+  width: 100%;
+}
+
+.show-row{
+  margin: 0.5rem 0;
+}
+
+.spot-title h2{
+  margin: auto;
+}
+
+.newspot-form h4{
+  font-weight: bold;
+}
+
+.show-img{
+  margin: 0;
+  height: 50%;
+}
+
+.show-right{
+  width: 30vh;
+  height: 45vh;
+  margin-top: 3vh;
+}
+
+.card-img-show{
+  height: 43%;
+}
+
+.show-body{
+    height: 15vh;
+    overflow-y: scroll;
+    border: solid;
+    border-radius: 5px;
+    border-color: #031de2;
+    background-color: #d0ecf5;
+    &::-webkit-scrollbar {
+      width: 10px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: #f15704;
+      border-radius: 5px;
+    }
+}
+
+.comment{
+  height: 35vh;
+  width: 61vh;
+  overflow-y: scroll;
+  overflow-x: hidden;
+    &::-webkit-scrollbar {
+      width: 10px;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: #ff4141;
+      border-radius: 5px;
+    }
+}
+
+ul.spot-comment li{
+    list-style-type: none;
+    background: #fce8fc;
+    vertical-align: middle;
+    color: black;
+    border-radius: 5px;
+    width: 50vh;
+    padding: 2px;
+    border: 0.5px solid;
+    border-color: pink;
+}
+
+.comment-right{
+  margin: auto;
+}
+
+.spot-edit{
+  margin-top: 1vh;
+}
+
+.like{
+  font-size: 4vh;
+}
+
+.edit-right{
+  width: 40vh;
+}
+
+.btn-spotedit{
+  margin: auto;
 }
