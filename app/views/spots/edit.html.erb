@@ -1,102 +1,92 @@
-<%= form_with model: @spot, method: :patch do |f| %>
-  <div class="container">
-    <div id='map'></div>
-    <div class="actions">
+<div class="show-container container">
+  <%= form_with model: @spot, method: :patch do |f| %>
+  <div class="spot-title row">
+    <h2 class="font-weight-bolder"><%= @spot.title %></h2>
+  </div>
+  <div class="show-row row col-12 d-flex justify-content-between">
+    <div class="post-left">
+      <div id='map'></div>
+      <input id="address" type="textbox" value="<%= @spot.title %>">
+      <input type="button" value="検索" onclick="codeAddress()">
+    </div>
+    <div class="edit-right">
       <h4>画像</h4>
       <%= f.file_field :image_id, accept: "image/*" %>
       <h4>タイトル</h4>
       <%= f.text_field :title %>
       <h4>詳細</h4>
       <%= f.text_area :body %>
-      <%= f.label :lat,"緯度" %>
-      <%= f.text_field :lat,:value => @spot.lat, id: :lat %>
-      <%= f.label :lng,"経度" %>
-      <%= f.text_field :lng,:value => @spot.lng, id: :lng %>
-
-    <%= f.submit '添付デート', class: 'btn btn-sm btn-primary' %>
+      <%= f.hidden_field :lat,:value => @spot.lat, id: :lat %>
+      <%= f.hidden_field :lng,:value => @spot.lng, id: :lng %>
     </div>
-    <% end %>
-
-  <h2>マップ</h2>
-  <input id="address" type="textbox" value="<%= @spot.title %>">
-  <input type="button" value="検索" onclick="codeAddress()">
-  <p>マーカーをドラック＆ドロップで位置の調整ができます。<p>
   </div>
+  <div class="row">
+    <div class="btn-spotedit">
+      <%= f.submit '編集', class: 'btn btn-success' %>
+    </div>
+  </div>
+  <% end %>
+</div>
 
-
-    <style>
-    #map {
-      height: 230px;
-      width: 230px;
-    }
-    </style>
+<style>
+  #map {
+    height: 50vh;
+    width: 50vh;
+  }
+</style>
 
 <script>
-//初期マップの設定
 let map
 let marker
 function initMap(){
   geocoder = new google.maps.Geocoder()
-
-map = new google.maps.Map(document.getElementById('map'), {
-    center:  {lat: <%= @spot.lat %>, lng: <%= @spot.lng %>},  //東京
-    zoom: 15,
-  });
-      let transitLayer = new google.maps.TransitLayer();
-    transitLayer.setMap(map);
-      ( function() {
-        let markerLatLng = new google.maps.LatLng({lat: <%= @spot.lat %>, lng: <%= @spot.lng %>}); // 緯度経度のデータ作成
-        let marker = new google.maps.Marker({
-          position: markerLatLng,
-          map: map
-        });
-        let infowindow = new google.maps.InfoWindow({
-          position: markerLatLng,
-          content: "<a><%= @spot.title %></a>"
-        }); 
-        marker.addListener('click', function() {
-          infowindow.open(map, marker);
-        });
-     })();
+  map = new google.maps.Map(document.getElementById('map'), {
+      center:  {lat: <%= @spot.lat %>, lng: <%= @spot.lng %>},  //東京
+      zoom: 15,
+    });
+  let transitLayer = new google.maps.TransitLayer();
+  transitLayer.setMap(map);
+    ( function() {
+      let markerLatLng = new google.maps.LatLng({lat: <%= @spot.lat %>, lng: <%= @spot.lng %>});
+      let marker = new google.maps.Marker({
+        position: markerLatLng,
+        map: map
+      });
+      let infowindow = new google.maps.InfoWindow({
+        position: markerLatLng,
+        content: "<a><%= @spot.title %></a>"
+      }); 
+      marker.addListener('click', function() {
+        infowindow.open(map, marker);
+      });
+   })();
 }
 
-//検索後のマップ作成
 let geocoder
 let aft
 function codeAddress(){
   let inputAddress = document.getElementById('address').value;
   geocoder.geocode( { 'address': inputAddress}, function(results, status) {
     if (status == 'OK') {
-        //マーカーが複数できないようにする
-        if (aft == true){
-            marker.setMap(null);
-        }
-
-        //新しくマーカーを作成する
-        map.setCenter(results[0].geometry.location);
-            marker = new google.maps.Marker({
-            map: map,
-            position: results[0].geometry.location,
-            draggable: true // ドラッグ可能にする
-        });
-
-        //二度目以降か判断
-        aft = true
-
-        //検索した時に緯度経度を入力する
-        document.getElementById('lat').value = results[0].geometry.location.lat();
-        document.getElementById('lng').value = results[0].geometry.location.lng();
-
-        // マーカーのドロップ（ドラッグ終了）時のイベント
-        google.maps.event.addListener( marker, 'dragend', function(ev){
-            // イベントの引数evの、プロパティ.latLngが緯度経度
-            document.getElementById('lat').value = ev.latLng.lat();
-            document.getElementById('lng').value = ev.latLng.lng();
-        });
-    } else {
-      alert('該当する結果がありませんでした：' + status);
-    }
-  });
-}
-
+      if (aft == true){
+          marker.setMap(null);
+      }
+      map.setCenter(results[0].geometry.location);
+          marker = new google.maps.Marker({
+          map: map,
+          position: results[0].geometry.location,
+          draggable: true
+      });
+      aft = true
+      document.getElementById('lat').value = results[0].geometry.location.lat();
+      document.getElementById('lng').value = results[0].geometry.location.lng();
+      google.maps.event.addListener( marker, 'dragend', function(ev){
+          document.getElementById('lat').value = ev.latLng.lat();
+          document.getElementById('lng').value = ev.latLng.lng();
+      });
+      } else {
+        alert('該当する結果がありませんでした：' + status);
+      }
+    });
+  }
 </script>

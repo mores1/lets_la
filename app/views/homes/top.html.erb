@@ -1,1 +1,10 @@
-topぺーーじ
+<div class = "top container">
+  <div class = "top-title">
+    Let's!<br>
+  La <% if @current_user == nil %>
+      <%= link_to login_path do %><i class="fas fa-car-side" style="color: red;"></i><% end %>-☆
+    <% else %>
+      <%= link_to spots_path do %><i class="fas fa-car-side" style="color: red;"></i><% end %>-☆
+    <% end %>
+  </div>
+</div>

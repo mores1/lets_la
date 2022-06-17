@@ -1,4 +1,17 @@
 @import '~bootstrap/scss/bootstrap';
+@import '~@fortawesome/fontawesome-free/scss/fontawesome';
+@import 'https://fonts.googleapis.com/css2?family=Hachi+Maru+Pop&display=swap';
+@import 'https://fonts.googleapis.com/earlyaccess/nicomoji.css';
+
+body{
+  height: 100vh;
+  font-family: 'Hachi Maru Pop', cursive;
+  font-weight: bold;
+  color: #111111;
+  display: flex;
+  flex-direction: column;
+  background-color: #faf68b;
+}
 
 .hamburger {
   display : block;
@@ -10,16 +23,31 @@
   height: 42px;
   cursor: pointer;
   text-align: center;
-  background-color:rgba(0,0,0,0.6);
+  background-color: rgb(55 210 236 / 53%);
   border-radius: 50%;
 }
+
+.hamburger.active {
+  display : block;
+  position: fixed;
+  z-index : 3;
+  right : 13px;
+  top   : 12px;
+  width : 42px;
+  height: 42px;
+  cursor: pointer;
+  text-align: center;
+  background-color: rgba(172, 196, 231, 36%);
+  border-radius: 50%;
+}
+
 .hamburger span {
   display : block;
   position: absolute;
   width   : 30px;
   height  : 2px ;
   left    : 6px;
-  background : #555;
+  background: #50a7cc;
 }
 .hamburger span:nth-child(1) {
   top: 10px;
@@ -35,10 +63,7 @@
 nav.globalMenuSp {
   position: fixed;
   z-index : 2;
-  top  : 0;
-  left : 0;
-  color: #000;
-  background-color:rgba(0,0,0,0.4);
+  background-color: rgba(0,0,0,0.4);
   text-align: center;
   transform: translateX(100%);
   width: 100%;
@@ -46,7 +71,7 @@ nav.globalMenuSp {
 }
 
 nav.globalMenuSp ul {
-  background-color:rgba(0,0,0,0);
+  background-color:rgba(0,0,0,0.51);
   margin: 0 auto;
   padding: 0;
   width: 100%;
@@ -63,16 +88,169 @@ nav.globalMenuSp ul li:last-child {
   border-bottom: none;
 }
 nav.globalMenuSp ul li:hover{
-  background-color:rgba(0,0,0,0);
+  background-color:rgba(0,0,0,0.2);
 }
 
 nav.globalMenuSp ul li a {
   display: block;
-  color: #000;
+  color: #fff;
   padding: 1em 0;
   text-decoration :none;
 }
 
 nav.globalMenuSp.active {
   transform: translateX(0%);
+}
+
+.top{
+  text-align: center;
+  height: 100vh;
+  margin: 0;
+  width: 100%;
+}
+
+.top-title{
+  height: 17vh;
+  font-size: 14vh;
+  margin: 27vh -31vh 27vh 5vh;
+  font-family: "Nico Moji";
+}
+
+.top a{
+  margin: auto;
+}
+
+.registrations-form{
+  margin-top: 19vh;
+  text-align: center;
+}
+
+.field{
+  margin: auto;
+}
+
+.field label{
+  display: inline-block;
+  margin-bottom: 0.65rem;
+}
+
+.registrations-btn{
+  margin-top: 1vh;
+}
+
+.show-container{
+  margin: 0;
+  width: 100%;
+}
+
+.show-row{
+  margin: 0.5rem 0;
+}
+
+.spot-title h2{
+  margin: auto;
+}
+
+.newspot-form h4{
+  font-weight: bold;
+}
+
+.show-img{
+  margin: 0;
+  height: 50%;
+}
+
+.show-right{
+  width: 30vh;
+  height: 45vh;
+  margin-top: 3vh;
+}
+
+.card-img-show{
+  height: 43%;
+}
+
+.show-body{
+    height: 15vh;
+    overflow-y: scroll;
+    border: solid;
+    border-radius: 5px;
+    border-color: #031de2;
+    background-color: #d0ecf5;
+    &::-webkit-scrollbar {
+      width: 10px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: #f15704;
+      border-radius: 5px;
+    }
+}
+
+.comment{
+  height: 35vh;
+  width: 61vh;
+  overflow-y: scroll;
+  overflow-x: hidden;
+    &::-webkit-scrollbar {
+      width: 10px;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: #ff4141;
+      border-radius: 5px;
+    }
+}
+
+ul.spot-comment li{
+    list-style-type: none;
+    background: #fce8fc;
+    vertical-align: middle;
+    color: black;
+    border-radius: 5px;
+    width: 50vh;
+    padding: 2px;
+    border: 0.5px solid;
+    border-color: pink;
+}
+
+.comment-right{
+  margin: auto;
+}
+
+.spot-edit{
+  margin-top: 1vh;
+}
+
+.like{
+  font-size: 4vh;
+}
+
+.edit-right{
+  width: 40vh;
+}
+
+.btn-spotedit{
+  margin: auto;
+}
+
+.comment-btn{
+  border-radius: 50%;
+  font-size: 4.5vh;
+}
+
+.comment-btn:hover{
+  border-bottom-color: transparent;
+	transform: translateY(-0.15em);
+}
+
+.indexcont{
+  margin: 0;
+}
+
+.map-box{
+  margin-left: -2vh;
+}
+
+.fa-car-side:hover{
+  transform: translateY(-0.1em);
 }

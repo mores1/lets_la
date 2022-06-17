@@ -1,82 +1,74 @@
-<div class ="container">
+<div class ="container text-center">
   <%= form_with model: Spot.new do |f| %>
-    <div class ="row">
-      <div class="col-6 mt-3">
-        <%= @user.name %>
+  <div class ="spot-title row">
+  <h2 class="font-weight-bolder">スポット投稿</h2>
+    <div class="row justify-content-center mt-2">
+      <div class="post-left">
         <div id='map'></div>
-        検索後地図でも位置調整ができるよ。<br>
-        <input id="address" type="textbox" placeholder="スポットを入力!">
-        <input type="button" value="検索" onclick="codeAddress()">
-        <%= f.hidden_field :lat,:value =>"緯度", id: :lat %>
-        <%= f.hidden_field :lng,:value =>"経度", id: :lng %>
+        <div class="spotinfo mt-3">
+          <input id="address" type="textbox" placeholder="スポットを入力!">
+          <input type="button" value="検索" onclick="codeAddress()">
+          <%= f.hidden_field :lat,:value =>"緯度", id: :lat %>
+          <%= f.hidden_field :lng,:value =>"経度", id: :lng %>
+        </div>
       </div>
-
       <div class="newspot-form col-6 mt-3 pl-5">
         <h4>画像</h4>
         <%= f.file_field :image_id, accept: "image/*" %>
         <h4>タイトル</h4>
         <%= f.text_field :title %>
         <h4>詳細</h4>
-        <%= f.text_area :body %><br>
-        </div>
-
+        <%= f.text_area :body %>
       </div>
     </div>
-
-    <div class="row text-center">
-      <div class="col-12 mb-2">
-        <%= f.submit '投稿', class: 'btn btn-primary' %>
-      </div>
+  </div>
+  <div class="row mt-2">
+    <div class="col-12 mb-2">
+      <%= f.submit '投稿', class: 'btn btn-primary' %>
     </div>
+  </div>
   <% end %>
 </div>
 
 <style>
-#map {
-  height: 350px;
-  width: 350px;
-
-}
+  #map {
+    height: 55vh;
+    width: 55vh;
+  }
 </style>
 
 <script>
-//初期マップの設定
+// セット(初期マップ定義)
 let map
 let marker
 function initMap(){
   geocoder = new google.maps.Geocoder()
-
-map = new google.maps.Map(document.getElementById('map'), {
-    center:  {lat: 35.6803997, lng:139.7690174},  //東京
-    zoom: 15,
-  });
-}
-
-//検索後のマップ作成
+  map = new google.maps.Map(document.getElementById('map'), {
+      center:  {lat: 35.6803997, lng:139.7690174},  //東京
+      zoom: 15,
+    });
+  }
+//検索
 let geocoder
 let aft
 function codeAddress(){
   let inputAddress = document.getElementById('address').value;
   geocoder.geocode( { 'address': inputAddress}, function(results, status) {
     if (status == 'OK') {
-        //マーカーが複数できないようにする
         if (aft == true){
             marker.setMap(null);
         }
-        //新しくマーカーを作成する
         map.setCenter(results[0].geometry.location);
             marker = new google.maps.Marker({
             map: map,
             position: results[0].geometry.location,
-            draggable: true //ドラッグで微調整
+            draggable: true
         });
-        //二度目以降か判断
         aft = true
-        //検索した時に緯度経度を入力する
         document.getElementById('lat').value = results[0].geometry.location.lat();
         document.getElementById('lng').value = results[0].geometry.location.lng();
+        //ドラッグ時緯度経度変更アクション
         google.maps.event.addListener( marker, 'dragend', function(ev){
-            // イベントの引数evの、プロパティ.latLngが緯度経度
             document.getElementById('lat').value = ev.latLng.lat();
             document.getElementById('lng').value = ev.latLng.lng();
         });

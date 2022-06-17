@@ -1,52 +1,60 @@
-<div id='map'></div>
-
-スタート<input type="textbox" id="go" value="" placeholder="名前or緯度経度(例:35.6803997,139.7690174)で検索"><br>
-ゴール<input type="textbox" id="fin" value="" placeholder="名前or緯度経度(例:35.6803997,139.7690174)で検索"><br>
-  <select id="testreset">
-    <option value="leave">残す</option>
-    <option value="delete">消す</option>
-  </select>
-<input type="button" id="btn" value="ナビ" onclick="testNav()">
-
-  <select id="start">
-  <% @spots.each do |spot| %>
-    <option value="<%= spot.lat %>,<%= spot.lng %>"><%= spot.title %></option>
-  <% end %>
-  </select>
-  <!--ゴール<input type="textbox" id="end" value="" placeholder="名前or緯度経度(例:35.6803997,139.7690174)で検索"><br>-->
-  <select id="end">
-    <% @spots.each do |spot| %>
-      <option value="<%= spot.lat %>,<%= spot.lng %>"><%= spot.title %></option>
-    <% end %>
-  </select>
-  <select id="reset">
-    <option value="leave">残す</option>
-    <option value="delete">消す</option>
-  </select>
-  <input type="submit" id="btn" value="検索" onclick="searchNav()">
-
-
-
+<div class="indexcont container">
+  <div class="map-box">
+    <div id='map'></div>
+  </div>
+  <div class="nav-box d-flex justify-content-between">
+    <div class="select-form">
+      既存スポットから検索!<br>
+      <select id="start">
+      <% @spots.each do |spot| %>
+        <option value="<%= spot.lat %>,<%= spot.lng %>"><%= spot.title %></option>
+      <% end %>
+      </select><br>
+      ↓<br>
+      <select id="end">
+        <% @spots.each do |spot| %>
+          <option value="<%= spot.lat %>,<%= spot.lng %>"><%= spot.title %></option>
+        <% end %>
+      </select><br>
+      <select id="reset">
+        <option value="leave">残す</option>
+        <option value="delete">消す</option>
+      </select>
+      <input type="submit" id="btn" value="検索" onclick="selectNav()">
+    </div>
+    <div class="search-form">
+      入力して検索!<br>
+      <input type="textbox" id="go" value="" placeholder="名前or緯度,経度で検索"><br>
+      ↓<br>
+      <input type="textbox" id="fin" value="" placeholder="名前or緯度,経度で検索"><br>
+      <select id="testreset">
+        <option value="leave">残す</option>
+        <option value="delete">消す</option>
+      </select>
+    <input type="button" id="btn" value="ナビ" onclick="searchNav()">
+    </div>
+  </div>
+</div>
 
 <style>
   #map {
-    height: 80vh;
-    width: 100vw;
+    height: 70vh;
+    width: 130vh;
   }
 </style>
 
 <script>
   let map
   let marker
-  
+
   function initMap(){
     geocoder = new google.maps.Geocoder()
     map = new google.maps.Map(document.getElementById('map'), {
-        center:  {lat: 35.6803997, lng:139.7690174},  //東京駅
-        zoom: 5, //日本全体用
+        center:  {lat: 36.31616117084595, lng: 140.0458184125},  //中心用
+        zoom: 4.6, //日本全体用
         mayTypeId: google.maps.MapTypeId.ROADMAP
       });
-      
+
     <% @spots.each do |spot|%>
       ( function() {
         let markerLatLng = new google.maps.LatLng({lat: <%= spot.lat %>, lng: <%= spot.lng %>});
@@ -57,15 +65,19 @@
         });
         let infowindow = new google.maps.InfoWindow({
           position: markerLatLng,
-          content: "<a href='<%= spot_path(spot) %>' ><%= spot.title %></a>" + "(緯度,経度)=(<%= spot.lat %>,<%= spot.lng %>)"
-        }); //ナビ用で緯度経度表示
+          content:
+              "<a href='<%= spot_path(spot) %>' ><%= spot.title %></a>" +
+              "(緯度,経度)=(<%= spot.lat %>,<%= spot.lng %>)"
+            });
         marker.addListener('click', function() {
           infowindow.open(map, marker);
           });
       })();
      <% end %>
   }
-    function testNav(){
+
+    // 検索用
+    function searchNav(){
     let renav = document.getElementById('testreset').value;
     let inputstart = document.getElementById('go').value;
     let inputend = document.getElementById('fin').value;
@@ -83,7 +95,6 @@
     }, function(response, status) {
         console.log(response);
         if (status === google.maps.DirectionsStatus.OK) {
-          // ルート検索の結果を地図上に描画
           directionsRenderer.setMap(map);
           directionsRenderer.setDirections(response);
           directionsRenderer.setOptions({
@@ -94,32 +105,31 @@
             }
           });
           alert("ルート検出！")
-          // directionsDisplay.setPanel(document.getElementById('directions_panel'));
           }else{
             alert("すみません、検索出来ません")
           }
       });
   }
-  
-  function searchNav(){
+
+  // セレクト用
+  function selectNav(){
     let renav = document.getElementById('reset').value;
     let inputstart = document.getElementById('start').value;
     let inputend = document.getElementById('end').value;
       if (renav == "delete"){
-        initMap(map);　//前の情報が残らない様に一度初期化
+        initMap(map);
       }
     let directionsService = new google.maps.DirectionsService;
     let directionsRenderer = new google.maps.DirectionsRenderer;
     directionsService.route({
-      origin: inputstart, //スタート地点
-      destination: inputend,　//ゴール地点
-      travelMode: google.maps.TravelMode.DRIVING,　//電車・徒歩ver対応しない為自動車に限定
-      avoidHighways: true, //高速禁止
-      avoidTolls: true //有料区間禁止(上記と併せて徒歩でも行けるようなルートにする)
+      origin: inputstart,
+      destination: inputend,
+      travelMode: google.maps.TravelMode.DRIVING,
+      avoidHighways: true,
+      avoidTolls: true
     }, function(response, status) {
         console.log(response);
         if (status === google.maps.DirectionsStatus.OK) {
-          // ルート検索の結果を地図上に描画
           directionsRenderer.setMap(map);
           directionsRenderer.setDirections(response);
           directionsRenderer.setOptions({
@@ -130,10 +140,9 @@
             }
           });
           alert("ルート検出！")
-          // directionsDisplay.setPanel(document.getElementById('directions_panel'));
-          }else{
-            alert("すみません、検索出来ません")
-          }
+        }else{
+          alert("すみません、検索出来ません")
+        }
       });
   }
 </script>
