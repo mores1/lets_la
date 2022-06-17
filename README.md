@@ -21,8 +21,9 @@
 
 ## 設計書
 ER図
-テーブル定義書
-アプリケーション詳細設計書
+テーブル定義書[Let'slab_テーブル定義書.pdf](https://github.com/mores1/lets_la/files/8924869/Let.slab_.pdf)
+アプリケーション詳細設計書![let's_lab_アプリケーション詳細設計](https://user-images.githubusercontent.com/97749252/174234718-85c63529-7b54-4dc8-af04-538bb8a1ac82.png)
+
 
 ## 開発環境
 - OS：Linux(CentOS)
