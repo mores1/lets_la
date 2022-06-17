@@ -34,10 +34,9 @@ class SpotsController < ApplicationController
 
   def edit
     spot_editer?
-    
     @spot = Spot.find(params[:id])
   end
-  
+
   def update
     @spot = Spot.find(params[:id])
     if @spot.update(spot_params)
@@ -47,7 +46,7 @@ class SpotsController < ApplicationController
       flash[:alert] = "更新出来ませんでした。"
     end
   end
-  
+
   def destroy
     @spot = Spot.find(params[:id])
     if @spot.destroy
@@ -57,10 +56,10 @@ class SpotsController < ApplicationController
       flash[:alert] = "削除出来ませんでした。"
     end
   end
-  
+
 
   private
-  
+
   def spot_editer?
     @spot = Spot.find(params[:id])
     unless @current_user.id == @spot.user.id || @current_user.name == "admin"

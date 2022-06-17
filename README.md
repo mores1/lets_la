@@ -1,24 +1,34 @@
-# README
+# Let's la B~☆
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## サイト概要
+### サイトテーマ
+おすすめお出かけスポットの投稿、閲覧や投稿スポットやGoogleマップを用いたルート検索が出来るアプリケーションです。
 
-Things you may want to cover:
+### テーマを選んだ理由
+陰キャにレジャー知識を問うんでない!
 
-* Ruby version
+遊びのスポットや土地勘が無い私は場所や移動時間を問われるとそう心で叫びますが、大人な私は改善策を考案しました。
+「他人の知識を集めれば良い！」世の有識者から情報を集め、ルート検索出来るアプリがあれば便利だなと...
+そんな思いからこのサービスを制作致しました。
 
-* System dependencies
+### ターゲットユーザ
+花の人生を送ってきた有識者、おすすめのスポットがある人。
+上記以外のレジャー知識に疎い方。
 
-* Configuration
+### 主な利用シーン
+・おすすめのスポットを投稿し、他人と共有したい時。
+・お出かけの計画を立てたい時。
 
-* Database creation
+## 設計書
+ER図
+テーブル定義書
+アプリケーション詳細設計書
 
-* Database initialization
+## 開発環境
+- OS：Linux(CentOS)
+- 言語：HTML,CSS,JavaScript,Ruby,SQL
+- フレームワーク：Ruby on Rails
+- JSライブラリ：jQuery
+- IDE：Cloud9
 
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+## 使用素材
