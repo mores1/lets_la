@@ -18,9 +18,11 @@ class UsersController < ApplicationController
   end
 
   def index
+    @users = User.all
   end
 
   def edit
+    editer?
     @user = User.find(params[:id])
   end
   
@@ -36,6 +38,14 @@ class UsersController < ApplicationController
   end
 
   private
+  
+  def editer?
+    @user = User.find(params[:id])
+    unless @current_user.id == @user.id || @current_user.name == "admin"
+      redirect_to root_path
+      flash[:alert] = "権限がありません。"
+    end
+  end
 
   def user_params
     params.require(:user).permit(:name, :email, :password, :password_confirmation)

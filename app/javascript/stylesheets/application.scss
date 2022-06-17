@@ -1,6 +1,7 @@
 @import '~bootstrap/scss/bootstrap';
 @import '~@fortawesome/fontawesome-free/scss/fontawesome';
 @import 'https://fonts.googleapis.com/css2?family=Hachi+Maru+Pop&display=swap';
+@import 'https://fonts.googleapis.com/earlyaccess/nicomoji.css';
 
 body{
   height: 100vh;
@@ -25,6 +26,21 @@ body{
   background-color: rgb(55 210 236 / 53%);
   border-radius: 50%;
 }
+
+.hamburger.active {
+  display : block;
+  position: fixed;
+  z-index : 3;
+  right : 13px;
+  top   : 12px;
+  width : 42px;
+  height: 42px;
+  cursor: pointer;
+  text-align: center;
+  background-color: rgba(172, 196, 231, 36%);
+  border-radius: 50%;
+}
+
 .hamburger span {
   display : block;
   position: absolute;
@@ -47,10 +63,7 @@ body{
 nav.globalMenuSp {
   position: fixed;
   z-index : 2;
-  top  : 0;
-  left : 0;
-  color: #000;
-  background-color:rgba(0,0,0,0.4);
+  background-color: rgba(0,0,0,0.4);
   text-align: center;
   transform: translateX(100%);
   width: 100%;
@@ -58,7 +71,7 @@ nav.globalMenuSp {
 }
 
 nav.globalMenuSp ul {
-  background-color:rgba(0,0,0,0);
+  background-color:rgba(0,0,0,0.51);
   margin: 0 auto;
   padding: 0;
   width: 100%;
@@ -75,12 +88,12 @@ nav.globalMenuSp ul li:last-child {
   border-bottom: none;
 }
 nav.globalMenuSp ul li:hover{
-  background-color:rgba(0,0,0,0);
+  background-color:rgba(0,0,0,0.2);
 }
 
 nav.globalMenuSp ul li a {
   display: block;
-  color: #000;
+  color: #fff;
   padding: 1em 0;
   text-decoration :none;
 }
@@ -92,12 +105,15 @@ nav.globalMenuSp.active {
 .top{
   text-align: center;
   height: 100vh;
+  margin: 0;
+  width: 100%;
 }
 
 .top-title{
-  height: 40vh;
-  font-size: 15vh;
-  margin-top: 31vh;
+  height: 17vh;
+  font-size: 14vh;
+  margin: 27vh -31vh 27vh 5vh;
+  font-family: "Nico Moji";
 }
 
 .top a{
@@ -215,4 +231,26 @@ ul.spot-comment li{
 
 .btn-spotedit{
   margin: auto;
+}
+
+.comment-btn{
+  border-radius: 50%;
+  font-size: 4.5vh;
+}
+
+.comment-btn:hover{
+  border-bottom-color: transparent;
+	transform: translateY(-0.15em);
+}
+
+.indexcont{
+  margin: 0;
+}
+
+.map-box{
+  margin-left: -2vh;
+}
+
+.fa-car-side:hover{
+  transform: translateY(-0.1em);
 }

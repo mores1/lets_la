@@ -47,11 +47,13 @@
       <div class="comment-form">
         <%= form_with model: [@spot, @spot_comment] do |f| %>
           <%= f.text_area :comment, placeholder: "コメントを入力してください" %><br>
-          <%= f.submit "コメント送信" %>
+          <%= button_tag(type: "submit", class: 'btn comment-btn') do %>
+            <i class="fas fa-comment" style="color: #d879ac;"></i>
+          <% end %>
         <% end %>
       </div>
       <div class="spot-edit">
-        <% if @spot_comment.user == @current_user || @current_user.name == "admin"  %>
+        <% if @spot.user == @current_user || @current_user.name == "admin"  %>
           <%= link_to "編集", edit_spot_path(@spot), class: 'btn btn-success' %>
           <%= link_to "削除", spot_path(@spot), method: :delete, class: 'btn btn-danger' %>
         <% end %>

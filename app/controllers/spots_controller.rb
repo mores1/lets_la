@@ -33,6 +33,8 @@ class SpotsController < ApplicationController
   end
 
   def edit
+    spot_editer?
+    
     @spot = Spot.find(params[:id])
   end
   
@@ -58,6 +60,14 @@ class SpotsController < ApplicationController
   
 
   private
+  
+  def spot_editer?
+    @spot = Spot.find(params[:id])
+    unless @current_user.id == @spot.user.id || @current_user.name == "admin"
+      redirect_to root_path
+      flash[:alert] = "権限がありません。"
+    end
+  end
 
   def spot_params
     params.required(:spot).permit(:user_id, :title, :body, :lat, :lng, :image_id)

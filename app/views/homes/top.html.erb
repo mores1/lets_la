@@ -1,10 +1,10 @@
-<div class = "container top">
-  <div class = "top-title">Lets La <i class="fas fa-car-side"></i>～</div>
-  <div class = "row">
-    <% if @current_user.present? %>
-      <%= link_to "ログアウト", logout_path, method: :delete %>
+<div class = "top container">
+  <div class = "top-title">
+    Let's!<br>
+  La <% if @current_user == nil %>
+      <%= link_to login_path do %><i class="fas fa-car-side" style="color: red;"></i><% end %>-☆
     <% else %>
-      <%= link_to "login", login_path %>
+      <%= link_to spots_path do %><i class="fas fa-car-side" style="color: red;"></i><% end %>-☆
     <% end %>
   </div>
 </div>

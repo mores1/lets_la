@@ -13,6 +13,7 @@ class ApplicationController < ActionController::Base
   def signin_user?
     if @current_user == nil
       redirect_to root_path
+      ccc
     end
   end
 
@@ -21,5 +22,5 @@ class ApplicationController < ActionController::Base
       redirect_to request.referer
     end
   end
-
+  
 end
