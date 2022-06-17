@@ -21,7 +21,7 @@
 
 ## 設計書
 ER図
-テーブル定義書[Let'slab_テーブル定義書.pdf](https://github.com/mores1/lets_la/files/8924869/Let.slab_.pdf)
+テーブル定義書![Let'slab_テーブル定義書](https://user-images.githubusercontent.com/97749252/174235076-e64bdcff-21f0-419e-864a-c75e651ad0de.png)
 アプリケーション詳細設計書![let's_lab_アプリケーション詳細設計](https://user-images.githubusercontent.com/97749252/174234718-85c63529-7b54-4dc8-af04-538bb8a1ac82.png)
 
 
