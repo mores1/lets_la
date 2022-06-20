@@ -18,6 +18,7 @@
 ### 主な利用シーン
 ・おすすめのスポットを投稿し、他人と共有したい時。
 ・お出かけの計画を立てたい時。
+・ルート検索を行いたい時。
 
 ## 設計書
 ER図[Let's_lab-.drawio.pdf](https://github.com/mores1/lets_la/files/8937343/Let.s_lab-.drawio.pdf)
